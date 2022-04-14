@@ -13,6 +13,9 @@ func main() {
 	}
 	log.Println("db connection: ", con)
 
+	id := addTask("person@email.com", "sample task2", "incomplete", con)
+	log.Println("id: ", id)
+
 	// helloHandler := func(w http.ResponseWriter, req *http.Request) {
 	// 	io.WriteString(w, "Hello, world!\n")
 	// }
