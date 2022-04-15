@@ -2,9 +2,17 @@ package main
 
 import (
 	"database/sql"
+	"log"
 
 	_ "github.com/mattn/go-sqlite3"
 )
+
+type task struct {
+	taskID int64
+	user   string
+	task   string
+	status string
+}
 
 //TODO connect to taskDB func
 func openTaskDB() (*sql.DB, error) {
@@ -13,23 +21,35 @@ func openTaskDB() (*sql.DB, error) {
 		//taskDB.Close()
 		return nil, err
 	}
-	// TODO remove this commented out code
-	// results, err := taskDB.Query("SELECT COUNT(*) FROM test WHERE id = 1")
-	// var count int
-	// for results.Next() {
-	// 	err := results.Scan(&count)
-	// 	if err != nil {
-	// 		log.Println("error in scan")
-	// 	}
-	// }
-	// log.Println("count: ", count)
 
 	return taskDB, err
 }
 
-//TODO connect to auditDB func
-
 //TODO get all tasks from user
+func getTasks(user string, taskDB *sql.DB) ([]task, error) {
+	var tasks []task
+
+	const query = `SELECT * FROM task_table WHERE user = ?`
+	rows, err := taskDB.Query(query, user)
+	if err != nil {
+		return tasks, err
+	}
+	defer rows.Close()
+	var task task
+	for rows.Next() {
+		err := rows.Scan(&task.taskID, &task.user, &task.task, &task.status)
+		if err != nil {
+			return nil, err
+		}
+		log.Println(task)
+		tasks = append(tasks, task)
+	}
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+	return tasks, err
+}
 
 //add a new task for a user
 func addTask(user, task, status string, taskDB *sql.DB) int64 {

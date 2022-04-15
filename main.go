@@ -11,11 +11,12 @@ func main() {
 	if err != nil {
 		log.Println("Error connecting to task DB.")
 	}
-	log.Println("db connection: ", con)
 
-	id := addTask("person@email.com", "sample task2", "incomplete", con)
-	log.Println("id: ", id)
-
+	tasks, err := getTasks("person@email.com", con)
+	if err != nil {
+		log.Println("error: ", err)
+	}
+	log.Println("Tasks: ", tasks)
 	// helloHandler := func(w http.ResponseWriter, req *http.Request) {
 	// 	io.WriteString(w, "Hello, world!\n")
 	// }
