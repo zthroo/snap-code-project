@@ -23,9 +23,17 @@ func main() {
 	// 	log.Println("error: ", err)
 	// }
 
-	err = markTaskIncomplete(9, con)
+	// err = markTaskComplete(9, con)
+	// if err != nil {
+	// 	log.Println("error: ", err)
+	// }
+
+	completeCount, incompleteCount, err := getCompleteAndIncompleteCount("person@email.com", con)
 	if err != nil {
 		log.Println("error: ", err)
+	} else {
+		log.Println("complete count:", completeCount)
+		log.Println("incomplete count:", incompleteCount)
 	}
 
 	tasks, err := getTasks("person@email.com", con)

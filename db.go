@@ -60,14 +60,14 @@ func addTask(user, task string, taskDB *sql.DB) (int64, error) {
 		) VALUES (?,?,'incomplete')`
 	_, err := taskDB.Exec(insertStmt, user, task)
 	if err != nil {
-		return 0, err //TODO this is probably not how we want to handle this error since I think it will stop the service.
+		return 0, err
 	}
 
 	const getIDStmt = `select MAX(task_id) FROM task_table`
 	var id int64
 	err = taskDB.QueryRow(getIDStmt).Scan(&id)
 	if err != nil {
-		return 0, err //TODO this is probably not how we want to handle this error since I think it will stop the service.
+		return 0, err
 	}
 	return id, err
 }
@@ -86,13 +86,30 @@ func markTaskComplete(id int64, taskDB *sql.DB) error {
 	return err
 }
 
-//TODO update a task to incomplete
+//update a task to incomplete
 func markTaskIncomplete(id int64, taskDB *sql.DB) error {
 	const updateStmt = `UPDATE task_table SET status = 'incomplete' WHERE task_id = ? AND status = 'complete'`
 	_, err := taskDB.Exec(updateStmt, id)
 	return err
 }
 
-//TODO get # of complete and incomplete tasks for a user
+//get # of complete and incomplete tasks for a user
+func getCompleteAndIncompleteCount(user string, taskDB *sql.DB) (int, int, error) {
+	const completeQuery = `SELECT COUNT(*) FROM task_table WHERE user = ? AND status = 'complete'`
+	const incompleteQuery = `SELECT COUNT(*) FROM task_table WHERE user = ? AND status = 'incomplete'`
+
+	var completeCount int
+	err := taskDB.QueryRow(completeQuery, user).Scan(&completeCount)
+	if err != nil {
+		return 0, 0, err
+	}
+	var incompleteCount int
+	err = taskDB.QueryRow(incompleteQuery, user).Scan(&incompleteCount)
+	if err != nil {
+		return 0, 0, err
+	}
+
+	return completeCount, incompleteCount, err
+}
 
 //TODO get users count of active tasks with times
