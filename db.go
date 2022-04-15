@@ -14,7 +14,7 @@ type task struct {
 	status string
 }
 
-//TODO connect to taskDB func
+//connect to taskDB func
 func openTaskDB() (*sql.DB, error) {
 	taskDB, err := sql.Open("sqlite3", "c:/users/pgold/side-projects/snap-code-project/local.db")
 	if err != nil {
@@ -25,7 +25,7 @@ func openTaskDB() (*sql.DB, error) {
 	return taskDB, err
 }
 
-//TODO get all tasks from user
+//get all tasks from user
 func getTasks(user string, taskDB *sql.DB) ([]task, error) {
 	var tasks []task
 
@@ -52,24 +52,24 @@ func getTasks(user string, taskDB *sql.DB) ([]task, error) {
 }
 
 //add a new task for a user
-func addTask(user, task, status string, taskDB *sql.DB) int64 {
+func addTask(user, task string, taskDB *sql.DB) (int64, error) {
 	const insertStmt = `INSERT INTO task_table (
 		user,
 		task,
 		status
-		) VALUES (?,?,?)`
-	_, err := taskDB.Exec(insertStmt, user, task, status)
+		) VALUES (?,?,'incomplete')`
+	_, err := taskDB.Exec(insertStmt, user, task)
 	if err != nil {
-		panic(err) //TODO this is probably not how we want to handle this error since I think it will stop the service.
+		return 0, err //TODO this is probably not how we want to handle this error since I think it will stop the service.
 	}
 
 	const getIDStmt = `select MAX(task_id) FROM task_table`
 	var id int64
 	err = taskDB.QueryRow(getIDStmt).Scan(&id)
 	if err != nil {
-		panic(err) //TODO this is probably not how we want to handle this error since I think it will stop the service.
+		return 0, err //TODO this is probably not how we want to handle this error since I think it will stop the service.
 	}
-	return id
+	return id, err
 }
 
 //TODO delete a task for a user

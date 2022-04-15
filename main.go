@@ -12,6 +12,12 @@ func main() {
 		log.Println("Error connecting to task DB.")
 	}
 
+	// id, err := addTask("person@email.com", "sample task 5", con)
+	// if err != nil {
+	// 	log.Println("error: ", err)
+	// }
+	// log.Println("ID: ", id)
+
 	tasks, err := getTasks("person@email.com", con)
 	if err != nil {
 		log.Println("error: ", err)
