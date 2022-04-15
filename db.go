@@ -80,6 +80,11 @@ func deleteTask(id int64, taskDB *sql.DB) error {
 }
 
 //TODO update a task to complete
+func markTaskComplete(id int64, taskDB *sql.DB) error {
+	const updateStmt = `UPDATE task_table SET status = 'complete' WHERE task_id = ? AND status = 'incomplete'`
+	_, err := taskDB.Exec(updateStmt, id)
+	return err
+}
 
 //TODO update a task to incomplete
 

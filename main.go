@@ -18,7 +18,12 @@ func main() {
 	// }
 	// log.Println("ID: ", id)
 
-	err = deleteTask(6, con)
+	// err = deleteTask(6, con)
+	// if err != nil {
+	// 	log.Println("error: ", err)
+	// }
+
+	err = markTaskComplete(9, con)
 	if err != nil {
 		log.Println("error: ", err)
 	}
