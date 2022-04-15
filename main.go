@@ -23,7 +23,7 @@ func main() {
 	// 	log.Println("error: ", err)
 	// }
 
-	err = markTaskComplete(9, con)
+	err = markTaskIncomplete(9, con)
 	if err != nil {
 		log.Println("error: ", err)
 	}

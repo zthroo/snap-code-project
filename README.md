@@ -90,3 +90,25 @@ BEGIN
                 LIMIT 1) - 1)
         );
 END;
+
+## trigger for update task to complete
+CREATE TRIGGER Incompleted_Task
+    AFTER UPDATE on task_table
+    WHEN new.status = 'incomplete'
+BEGIN
+        INSERT INTO active_task_table (
+            task_id,
+            user,
+            user_active_tasks
+        )
+        VALUES
+        (
+            OLD.task_id,
+            OLD.user,
+            ((SELECT user_active_tasks
+                FROM active_task_table
+                WHERE user = OLD.user
+                ORDER BY timestamp DESC
+                LIMIT 1) + 1)
+        );
+END;
