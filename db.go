@@ -14,6 +14,11 @@ type task struct {
 	status string
 }
 
+type timeCount struct {
+	time      string
+	taskCount int
+}
+
 //connect to taskDB func
 func openTaskDB() (*sql.DB, error) {
 	taskDB, err := sql.Open("sqlite3", "c:/users/pgold/side-projects/snap-code-project/local.db")
@@ -41,7 +46,7 @@ func getTasks(user string, taskDB *sql.DB) ([]task, error) {
 		if err != nil {
 			return nil, err
 		}
-		log.Println(task)
+		log.Println(task) //TODO comment out for final
 		tasks = append(tasks, task)
 	}
 	err = rows.Err()
@@ -112,4 +117,36 @@ func getCompleteAndIncompleteCount(user string, taskDB *sql.DB) (int, int, error
 	return completeCount, incompleteCount, err
 }
 
-//TODO get users count of active tasks with times
+//get users count of active tasks with times
+func getTimeCounts(user string, taskDB *sql.DB) ([]timeCount, error) {
+	var timeCounts []timeCount
+	const query = `SELECT 
+			timestamp, 
+			user_active_tasks 
+		FROM 
+			active_task_table 
+		WHERE 
+			user = ? 
+		ORDER BY 
+			timestamp ASC`
+
+	rows, err := taskDB.Query(query, user)
+	if err != nil {
+		return timeCounts, err
+	}
+	defer rows.Close()
+	var timeCount timeCount
+	for rows.Next() {
+		err := rows.Scan(&timeCount.time, &timeCount.taskCount)
+		if err != nil {
+			return nil, err
+		}
+		log.Println(timeCount) //TODO comment out for final
+		timeCounts = append(timeCounts, timeCount)
+	}
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+	return timeCounts, err
+}

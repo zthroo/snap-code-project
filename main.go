@@ -36,6 +36,13 @@ func main() {
 		log.Println("incomplete count:", incompleteCount)
 	}
 
+	timeCounts, err := getTimeCounts("person@email.com", con)
+	if err != nil {
+		log.Println("error:", err)
+	} else {
+		log.Println("timeCounts:", timeCounts)
+	}
+
 	tasks, err := getTasks("person@email.com", con)
 	if err != nil {
 		log.Println("error: ", err)
