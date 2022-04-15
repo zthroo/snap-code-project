@@ -31,7 +31,7 @@ func openTaskDB() (*sql.DB, error) {
 
 //TODO get all tasks from user
 
-//TODO add a new task for a user
+//add a new task for a user
 func addTask(user, task, status string, taskDB *sql.DB) int64 {
 	const insertStmt = `INSERT INTO task_table (
 		user,
