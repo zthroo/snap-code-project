@@ -72,7 +72,12 @@ func addTask(user, task string, taskDB *sql.DB) (int64, error) {
 	return id, err
 }
 
-//TODO delete a task for a user
+//delete specific task
+func deleteTask(id int64, taskDB *sql.DB) error {
+	const deleteStmt = `DELETE FROM task_table WHERE task_id = ?`
+	_, err := taskDB.Exec(deleteStmt, id)
+	return err
+}
 
 //TODO update a task to complete
 

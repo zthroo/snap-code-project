@@ -18,11 +18,17 @@ func main() {
 	// }
 	// log.Println("ID: ", id)
 
+	err = deleteTask(6, con)
+	if err != nil {
+		log.Println("error: ", err)
+	}
+
 	tasks, err := getTasks("person@email.com", con)
 	if err != nil {
 		log.Println("error: ", err)
 	}
 	log.Println("Tasks: ", tasks)
+
 	// helloHandler := func(w http.ResponseWriter, req *http.Request) {
 	// 	io.WriteString(w, "Hello, world!\n")
 	// }
