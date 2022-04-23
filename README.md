@@ -5,7 +5,7 @@ helpful sqlite:
 .header on
 .mode column
 
-* GET get list of existing to-do tasks
+* GET get list of existing to-do tasks - endpoint: `/tasks/<user>`
 * POST add a new to-do task
 * PUT mark task as complete
 * PUT mark task as incomplete
