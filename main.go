@@ -1,15 +1,20 @@
 package main
 
 import (
-	"log"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	// connect to db
-	con, err := openTaskDB()
-	if err != nil {
-		log.Println("Error connecting to task DB.")
-	}
+	// con, err := openTaskDB()
+	// if err != nil {
+	// 	log.Println("Error connecting to task DB.")
+	// }
+
+	router := gin.Default()
+	router.GET("tasks/:user", getTasksWeb)
+
+	router.Run("localhost:8080")
 
 	// id, err := addTask("person@email.com", "sample task 5", con)
 	// if err != nil {
@@ -27,26 +32,26 @@ func main() {
 	// 	log.Println("error: ", err)
 	// }
 
-	completeCount, incompleteCount, err := getCompleteAndIncompleteCount("person@email.com", con)
-	if err != nil {
-		log.Println("error: ", err)
-	} else {
-		log.Println("complete count:", completeCount)
-		log.Println("incomplete count:", incompleteCount)
-	}
+	// completeCount, incompleteCount, err := getCompleteAndIncompleteCount("person@email.com", con)
+	// if err != nil {
+	// 	log.Println("error: ", err)
+	// } else {
+	// 	log.Println("complete count:", completeCount)
+	// 	log.Println("incomplete count:", incompleteCount)
+	// }
 
-	timeCounts, err := getTimeCounts("person@email.com", con)
-	if err != nil {
-		log.Println("error:", err)
-	} else {
-		log.Println("timeCounts:", timeCounts)
-	}
+	// timeCounts, err := getTimeCounts("person@email.com", con)
+	// if err != nil {
+	// 	log.Println("error:", err)
+	// } else {
+	// 	log.Println("timeCounts:", timeCounts)
+	// }
 
-	tasks, err := getTasks("person@email.com", con)
-	if err != nil {
-		log.Println("error: ", err)
-	}
-	log.Println("Tasks: ", tasks)
+	// tasks, err := getTasks("person@email.com", con)
+	// if err != nil {
+	// 	log.Println("error: ", err)
+	// }
+	// log.Println("Tasks: ", tasks)
 
 	// helloHandler := func(w http.ResponseWriter, req *http.Request) {
 	// 	io.WriteString(w, "Hello, world!\n")
