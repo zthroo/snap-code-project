@@ -19,6 +19,11 @@ type timeCount struct {
 	TaskCount int    `json:"taskCount"`
 }
 
+type taskCount struct {
+	TasksComplete   int `json:"tasksComplete"`
+	TasksIncomplete int `json:"tasksIncomplete"`
+}
+
 // connect to taskDB func
 func openTaskDB() (*sql.DB, error) {
 	taskDB, err := sql.Open("sqlite3", "c:/users/pgold/side-projects/snap-code-project/local.db")
@@ -99,22 +104,22 @@ func markTaskIncomplete(id int64, taskDB *sql.DB) error {
 }
 
 // get # of complete and incomplete tasks for a user
-func getCompleteAndIncompleteCount(user string, taskDB *sql.DB) (int, int, error) {
+func getCompleteAndIncompleteCount(user string, taskDB *sql.DB) (taskCount, error) {
 	const completeQuery = `SELECT COUNT(*) FROM task_table WHERE user = ? AND status = 'complete'`
 	const incompleteQuery = `SELECT COUNT(*) FROM task_table WHERE user = ? AND status = 'incomplete'`
 
 	var completeCount int
 	err := taskDB.QueryRow(completeQuery, user).Scan(&completeCount)
 	if err != nil {
-		return 0, 0, err
+		return taskCount{}, err
 	}
 	var incompleteCount int
 	err = taskDB.QueryRow(incompleteQuery, user).Scan(&incompleteCount)
 	if err != nil {
-		return 0, 0, err
+		return taskCount{}, err
 	}
 
-	return completeCount, incompleteCount, err
+	return taskCount{completeCount, incompleteCount}, err
 }
 
 // get users count of active tasks with times

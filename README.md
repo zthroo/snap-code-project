@@ -10,7 +10,7 @@ helpful sqlite:
 * PUT mark task as complete
 * PUT mark task as incomplete
 * DELETE a task
-* GET users counts with times
+* GET users counts with times - endpoint `/tasksCount/<user>`
 * GET # of complete and incomplete teaks for a user
 
 ## task_table schema:

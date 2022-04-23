@@ -13,6 +13,7 @@ func main() {
 
 	router := gin.Default()
 	router.GET("tasks/:user", getTasksWeb)
+	router.GET("tasksCount/:user", getTaskCounts)
 
 	router.Run("localhost:8080")
 
