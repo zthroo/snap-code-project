@@ -14,6 +14,7 @@ func main() {
 	router := gin.Default()
 	router.GET("tasks/:user", getTasksWeb)
 	router.GET("tasksCount/:user", getTaskCounts)
+	router.GET("burndown/:user", getBurndown)
 
 	router.Run("localhost:8080")
 
