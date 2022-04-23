@@ -5,6 +5,14 @@ helpful sqlite:
 .header on
 .mode column
 
+* GET get list of existing to-do tasks
+* POST add a new to-do task
+* PUT mark task as complete
+* PUT mark task as incomplete
+* DELETE a task
+* GET users counts with times
+* GET # of complete and incomplete teaks for a user
+
 ## task_table schema:
 CREATE TABLE task_table (
 task_id INTEGER PRIMARY KEY AUTOINCREMENT,
