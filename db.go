@@ -19,7 +19,7 @@ type timeCount struct {
 	taskCount int
 }
 
-//connect to taskDB func
+// connect to taskDB func
 func openTaskDB() (*sql.DB, error) {
 	taskDB, err := sql.Open("sqlite3", "c:/users/pgold/side-projects/snap-code-project/local.db")
 	if err != nil {
@@ -30,7 +30,7 @@ func openTaskDB() (*sql.DB, error) {
 	return taskDB, err
 }
 
-//get all tasks from user
+// get all tasks from user
 func getTasks(user string, taskDB *sql.DB) ([]task, error) {
 	var tasks []task
 
@@ -56,7 +56,7 @@ func getTasks(user string, taskDB *sql.DB) ([]task, error) {
 	return tasks, err
 }
 
-//add a new task for a user
+// add a new task for a user
 func addTask(user, task string, taskDB *sql.DB) (int64, error) {
 	const insertStmt = `INSERT INTO task_table (
 		user,
@@ -77,28 +77,28 @@ func addTask(user, task string, taskDB *sql.DB) (int64, error) {
 	return id, err
 }
 
-//delete specific task
+// delete specific task
 func deleteTask(id int64, taskDB *sql.DB) error {
 	const deleteStmt = `DELETE FROM task_table WHERE task_id = ?`
 	_, err := taskDB.Exec(deleteStmt, id)
 	return err
 }
 
-//update a task to complete
+// update a task to complete
 func markTaskComplete(id int64, taskDB *sql.DB) error {
 	const updateStmt = `UPDATE task_table SET status = 'complete' WHERE task_id = ? AND status = 'incomplete'`
 	_, err := taskDB.Exec(updateStmt, id)
 	return err
 }
 
-//update a task to incomplete
+// update a task to incomplete
 func markTaskIncomplete(id int64, taskDB *sql.DB) error {
 	const updateStmt = `UPDATE task_table SET status = 'incomplete' WHERE task_id = ? AND status = 'complete'`
 	_, err := taskDB.Exec(updateStmt, id)
 	return err
 }
 
-//get # of complete and incomplete tasks for a user
+// get # of complete and incomplete tasks for a user
 func getCompleteAndIncompleteCount(user string, taskDB *sql.DB) (int, int, error) {
 	const completeQuery = `SELECT COUNT(*) FROM task_table WHERE user = ? AND status = 'complete'`
 	const incompleteQuery = `SELECT COUNT(*) FROM task_table WHERE user = ? AND status = 'incomplete'`
@@ -117,7 +117,7 @@ func getCompleteAndIncompleteCount(user string, taskDB *sql.DB) (int, int, error
 	return completeCount, incompleteCount, err
 }
 
-//get users count of active tasks with times
+// get users count of active tasks with times
 func getTimeCounts(user string, taskDB *sql.DB) ([]timeCount, error) {
 	var timeCounts []timeCount
 	const query = `SELECT 

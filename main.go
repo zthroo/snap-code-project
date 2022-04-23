@@ -5,8 +5,7 @@ import (
 )
 
 func main() {
-
-	// hello world web server
+	// connect to db
 	con, err := openTaskDB()
 	if err != nil {
 		log.Println("Error connecting to task DB.")
