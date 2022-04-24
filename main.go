@@ -21,6 +21,7 @@ func main() {
 	router.DELETE("deleteTask/:id", deleteTaskWeb)
 
 	router.PUT("markTaskComplete/:id", updateTaskComplete)
+	router.PUT("markTaskIncomplete/:id", updateTaskIncomplete)
 
 	router.Run("localhost:8080")
 

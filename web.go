@@ -109,3 +109,22 @@ func updateTaskComplete(c *gin.Context) {
 	}
 	c.IndentedJSON(http.StatusOK, id)
 }
+
+func updateTaskIncomplete(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 0, 64)
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	taskDB, err := openTaskDB()
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	err = markTaskIncomplete(id, taskDB)
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	c.IndentedJSON(http.StatusOK, id)
+}
