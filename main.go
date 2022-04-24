@@ -20,6 +20,8 @@ func main() {
 
 	router.DELETE("deleteTask/:id", deleteTaskWeb)
 
+	router.PUT("markTaskComplete/:id", updateTaskComplete)
+
 	router.Run("localhost:8080")
 
 	// id, err := addTask("person@email.com", "sample task 5", con)
