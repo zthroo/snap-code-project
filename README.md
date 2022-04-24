@@ -6,7 +6,8 @@ helpful sqlite:
 .mode column
 
 * GET get list of existing to-do tasks - endpoint: `/tasks/<user>`
-* POST add a new to-do task
+* POST add a new to-do task - endpoint `/addtask` body should be `{"user":<user>,"task":<task>}` 
+    * example curl: `curl -X POST localhost:8080/addtask -H "Content-Type: application/json" -d "{\"user\":\"specialperson@email.com\",\"task\":\"a new task\"}"`
 * PUT mark task as complete
 * PUT mark task as incomplete
 * DELETE a task

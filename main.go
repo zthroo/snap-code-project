@@ -16,6 +16,8 @@ func main() {
 	router.GET("tasksCount/:user", getTaskCounts)
 	router.GET("burndown/:user", getBurndown)
 
+	router.POST("addtask", postNewTask)
+
 	router.Run("localhost:8080")
 
 	// id, err := addTask("person@email.com", "sample task 5", con)
