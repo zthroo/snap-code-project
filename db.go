@@ -51,7 +51,7 @@ func getTasks(user string, taskDB *sql.DB) ([]task, error) {
 		if err != nil {
 			return nil, err
 		}
-		log.Println(task) //TODO comment out for final
+		log.Println(task)
 		tasks = append(tasks, task)
 	}
 	err = rows.Err()
@@ -146,7 +146,7 @@ func getTimeCounts(user string, taskDB *sql.DB) ([]timeCount, error) {
 		if err != nil {
 			return nil, err
 		}
-		log.Println(timeCount) //TODO comment out for final
+		log.Println(timeCount)
 		timeCounts = append(timeCounts, timeCount)
 	}
 	err = rows.Err()
