@@ -8,15 +8,20 @@ import (
 )
 
 type task struct {
-	taskID int64
-	user   string
-	task   string
-	status string
+	TaskID int64  `json:"taskID"`
+	User   string `json:"user"`
+	Task   string `json:"task"`
+	Status string `json:"status"`
 }
 
 type timeCount struct {
-	time      string
-	taskCount int
+	Time      string `json:"time"`
+	TaskCount int    `json:"taskCount"`
+}
+
+type taskCount struct {
+	TasksComplete   int `json:"tasksComplete"`
+	TasksIncomplete int `json:"tasksIncomplete"`
 }
 
 // connect to taskDB func
@@ -42,7 +47,7 @@ func getTasks(user string, taskDB *sql.DB) ([]task, error) {
 	defer rows.Close()
 	var task task
 	for rows.Next() {
-		err := rows.Scan(&task.taskID, &task.user, &task.task, &task.status)
+		err := rows.Scan(&task.TaskID, &task.User, &task.Task, &task.Status)
 		if err != nil {
 			return nil, err
 		}
@@ -99,22 +104,22 @@ func markTaskIncomplete(id int64, taskDB *sql.DB) error {
 }
 
 // get # of complete and incomplete tasks for a user
-func getCompleteAndIncompleteCount(user string, taskDB *sql.DB) (int, int, error) {
+func getCompleteAndIncompleteCount(user string, taskDB *sql.DB) (taskCount, error) {
 	const completeQuery = `SELECT COUNT(*) FROM task_table WHERE user = ? AND status = 'complete'`
 	const incompleteQuery = `SELECT COUNT(*) FROM task_table WHERE user = ? AND status = 'incomplete'`
 
 	var completeCount int
 	err := taskDB.QueryRow(completeQuery, user).Scan(&completeCount)
 	if err != nil {
-		return 0, 0, err
+		return taskCount{}, err
 	}
 	var incompleteCount int
 	err = taskDB.QueryRow(incompleteQuery, user).Scan(&incompleteCount)
 	if err != nil {
-		return 0, 0, err
+		return taskCount{}, err
 	}
 
-	return completeCount, incompleteCount, err
+	return taskCount{completeCount, incompleteCount}, err
 }
 
 // get users count of active tasks with times
@@ -137,7 +142,7 @@ func getTimeCounts(user string, taskDB *sql.DB) ([]timeCount, error) {
 	defer rows.Close()
 	var timeCount timeCount
 	for rows.Next() {
-		err := rows.Scan(&timeCount.time, &timeCount.taskCount)
+		err := rows.Scan(&timeCount.Time, &timeCount.TaskCount)
 		if err != nil {
 			return nil, err
 		}
