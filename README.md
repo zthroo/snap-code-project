@@ -6,11 +6,12 @@ helpful sqlite:
 .mode column
 
 * GET get list of existing to-do tasks - endpoint: `/tasks/<user>`
-* POST add a new to-do task - endpoint `/addtask` body should be `{"user":<user>,"task":<task>}` 
-    * example curl: `curl -X POST localhost:8080/addtask -H "Content-Type: application/json" -d "{\"user\":\"specialperson@email.com\",\"task\":\"a new task\"}"`
+* POST add a new to-do task - endpoint `/addTask` body should be `{"user":<user>,"task":<task>}` 
+    * example curl: `curl -X POST localhost:8080/addTask -H "Content-Type: application/json" -d "{\"user\":\"specialperson@email.com\",\"task\":\"a new task\"}"`
 * PUT mark task as complete
 * PUT mark task as incomplete
-* DELETE a task
+* DELETE a task - endpoint `/deleteTask/<taskid>`
+    * example curl: `curl -X "DELETE" localhost:8080/deleteTask/15`
 * GET users counts with times - endpoint `/burndown/<user>`
 * GET # of complete and incomplete teaks for a user - endpoint `/tasksCount/<user>`
 

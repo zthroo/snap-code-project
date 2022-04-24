@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,10 +12,12 @@ func getTasksWeb(c *gin.Context) {
 	taskDB, err := openTaskDB()
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
+		return
 	}
 	tasks, err := getTasks(user, taskDB)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
+		return
 	}
 	c.IndentedJSON(http.StatusOK, tasks)
 }
@@ -24,10 +27,12 @@ func getTaskCounts(c *gin.Context) {
 	taskDB, err := openTaskDB()
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
+		return
 	}
 	tasksCount, err := getCompleteAndIncompleteCount(user, taskDB)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
+		return
 	}
 	c.IndentedJSON(http.StatusOK, tasksCount)
 }
@@ -37,10 +42,12 @@ func getBurndown(c *gin.Context) {
 	taskDB, err := openTaskDB()
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
+		return
 	}
 	burndown, err := getTimeCounts(user, taskDB)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
+		return
 	}
 	c.IndentedJSON(http.StatusOK, burndown)
 }
@@ -63,4 +70,23 @@ func postNewTask(c *gin.Context) {
 	}
 	id, err := addTask(input.User, input.Task, taskDB)
 	c.IndentedJSON(http.StatusOK, gin.H{"taskId": id})
+}
+
+func deleteTaskWeb(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 0, 64)
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	taskDB, err := openTaskDB()
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	err = deleteTask(id, taskDB)
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	c.IndentedJSON(http.StatusOK, id)
 }

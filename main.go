@@ -16,7 +16,9 @@ func main() {
 	router.GET("tasksCount/:user", getTaskCounts)
 	router.GET("burndown/:user", getBurndown)
 
-	router.POST("addtask", postNewTask)
+	router.POST("addTask", postNewTask)
+
+	router.DELETE("deleteTask/:id", deleteTaskWeb)
 
 	router.Run("localhost:8080")
 
