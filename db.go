@@ -85,21 +85,21 @@ func addTask(user, task string, taskDB *sql.DB) (int64, error) {
 // delete specific task
 func deleteTask(id int64, taskDB *sql.DB) error {
 	const deleteStmt = `DELETE FROM task_table WHERE task_id = ?`
-	_, err := taskDB.Exec(deleteStmt, id)
+	_, err := taskDB.Exec(deleteStmt, id) // TODO: this doesn't error when there's nothing to update.
 	return err
 }
 
 // update a task to complete
 func markTaskComplete(id int64, taskDB *sql.DB) error {
 	const updateStmt = `UPDATE task_table SET status = 'complete' WHERE task_id = ? AND status = 'incomplete'`
-	_, err := taskDB.Exec(updateStmt, id)
+	_, err := taskDB.Exec(updateStmt, id) // TODO: this doesn't error when there's nothing to update.
 	return err
 }
 
 // update a task to incomplete
 func markTaskIncomplete(id int64, taskDB *sql.DB) error {
 	const updateStmt = `UPDATE task_table SET status = 'incomplete' WHERE task_id = ? AND status = 'complete'`
-	_, err := taskDB.Exec(updateStmt, id)
+	_, err := taskDB.Exec(updateStmt, id) // TODO: this doesn't error when there's nothing to update.
 	return err
 }
 
