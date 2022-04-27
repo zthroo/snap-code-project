@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// getTasksWeb returns all the current tasks of the requested user as a json array
 func getTasksWeb(c *gin.Context) {
 	user := c.Param("user")
 	taskDB, err := openTaskDB()
@@ -22,6 +23,7 @@ func getTasksWeb(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, tasks)
 }
 
+// getTaskCount returns the count of the requested user's complete and incomplete tasks as a json
 func getTaskCounts(c *gin.Context) {
 	user := c.Param("user")
 	taskDB, err := openTaskDB()
@@ -37,6 +39,7 @@ func getTaskCounts(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, tasksCount)
 }
 
+// getBurndown returns an array of the requested user's active tasks counts with timestamps as a json array
 func getBurndown(c *gin.Context) {
 	user := c.Param("user")
 	taskDB, err := openTaskDB()
@@ -57,6 +60,7 @@ type CreateTaskInput struct {
 	Task string `json:"task" binding:"required"`
 }
 
+// postNewTask expects a json containing the user and the task, checks that it contains both of those, inserts the task into the database, and returns the task id assigned.
 func postNewTask(c *gin.Context) {
 	var input CreateTaskInput
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -72,6 +76,7 @@ func postNewTask(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, gin.H{"taskId": id})
 }
 
+// deleteTaskWeb deletes the requested task from the database and returns the id of the deleted task
 func deleteTaskWeb(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 0, 64)
 	if err != nil {
@@ -91,6 +96,7 @@ func deleteTaskWeb(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, id)
 }
 
+// updateTaskComplete updates the status of the task with id matching the given id to complete
 func updateTaskComplete(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 0, 64)
 	if err != nil {
@@ -110,6 +116,7 @@ func updateTaskComplete(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, id)
 }
 
+// updateTaskIncomplete updates the status of the task with id matching the given id to incomplete
 func updateTaskIncomplete(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 0, 64)
 	if err != nil {
