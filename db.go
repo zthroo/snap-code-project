@@ -26,7 +26,7 @@ type taskCount struct {
 
 // connect to taskDB func
 func openTaskDB() (*sql.DB, error) {
-	taskDB, err := sql.Open("sqlite3", "c:/users/pgold/side-projects/snap-code-project/local.db")
+	taskDB, err := sql.Open("sqlite3", "./local.db")
 	if err != nil {
 		//taskDB.Close()
 		return nil, err
