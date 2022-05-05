@@ -78,6 +78,7 @@ END;
 ```
 CREATE TRIGGER Deleted_Task
     AFTER DELETE ON task_table
+    WHEN OLD.status = 'incomplete'
 BEGIN
         INSERT INTO active_task_table (
             task_id,
@@ -121,7 +122,7 @@ BEGIN
 END;
 ```
 
-## trigger for update task to complete
+## trigger for update task to incomplete
 ```
 CREATE TRIGGER Incompleted_Task
     AFTER UPDATE on task_table
